@@ -559,3 +559,14 @@ async function endBattle(roomCode, reason) {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => console.log(`CodeBlitz running on port ${PORT}`));
+
+// Keep-alive self ping
+const RENDER_URL = 'https://codeblitz.onrender.com/api/leaderboard';
+setInterval(async () => {
+  try {
+    await axios.get(RENDER_URL);
+    console.log('Keep-alive ping sent');
+  } catch (err) {
+    console.error('Keep-alive failed:', err.message);
+  }
+}, 4 * 60 * 1000); // every 4 minutes
