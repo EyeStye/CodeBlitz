@@ -808,7 +808,7 @@ function copyRoomCode() {
 // Socket.io
 function connectSocket(roomCode) {
   if (socket) socket.disconnect();
-  socket = io('https://your-app.onrender.com');
+  socket = io('https://codeblitz-laid.onrender.com');
   
   socket.on('connect', () => {
     socket.emit('join_room', { roomCode, token });
