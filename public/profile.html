@@ -597,7 +597,10 @@ const token = localStorage.getItem('cb_token');
 const loggedUser = JSON.parse(localStorage.getItem('cb_user') || '{}');
 
 // Nav
-document.getElementById('nav-elo').textContent = loggedUser.elo || '—';
+// document.getElementById('nav-elo').textContent = loggedUser.elo || '—';
+const navEloEl = document.getElementById('nav-elo');
+navEloEl.textContent = loggedUser.elo || '—';
+navEloEl.style.color = eloColor(loggedUser.elo);
 document.getElementById('nav-user').textContent = '@' + (loggedUser.cfHandle || '');
 
 async function loadProfile() {
