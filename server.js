@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ─── MongoDB Models ───────────────────────────────────────────────────────────
-
+console.log("URI:", process.env.MONGO_URI);
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/codeblitz');
 
 const userSchema = new mongoose.Schema({
