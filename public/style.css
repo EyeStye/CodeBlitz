@@ -1,5 +1,5 @@
 /* ── CodeBlitz Global Styles ── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;600;800&display=swap');
 
 :root {
   --bg-primary: #080c0f;
@@ -68,7 +68,7 @@ button { cursor: pointer; }
 }
 
 .nav-logo {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 26px;
   letter-spacing: 2px;
   color: var(--text-primary);
@@ -112,7 +112,7 @@ button { cursor: pointer; }
 }
 
 .nav-elo {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 20px;
   color: var(--accent);
   border: 1px solid var(--accent-dim);
@@ -169,7 +169,7 @@ button { cursor: pointer; }
 }
 
 .section-title {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 32px;
   letter-spacing: 2px;
 }
@@ -217,7 +217,7 @@ button { cursor: pointer; }
 
 /* ── Buttons ── */
 .btn {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 16px;
   letter-spacing: 2px;
   padding: 12px 28px;
@@ -294,7 +294,7 @@ button { cursor: pointer; }
 
 /* ── ELO bar ── */
 .elo-display {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 64px;
   color: var(--accent);
   text-shadow: 0 0 40px var(--accent);
@@ -373,7 +373,7 @@ button { cursor: pointer; }
 }
 
 .modal-title {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 24px;
   letter-spacing: 2px;
 }
