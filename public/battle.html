@@ -879,7 +879,7 @@ function showSolveNotify(isMe, solverName, problemName, pts) {
 }
 
 // Socket
-const socket = io();
+const socket = io('https://your-app.onrender.com');
 
 socket.on('connect', () => {
   socket.emit('join_room', { roomCode, token });

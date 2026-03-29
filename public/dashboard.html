@@ -808,10 +808,17 @@ function copyRoomCode() {
 // Socket.io
 function connectSocket(roomCode) {
   if (socket) socket.disconnect();
-  socket = io();
+  socket = io('https://your-app.onrender.com');
   
   socket.on('connect', () => {
     socket.emit('join_room', { roomCode, token });
+  });
+
+  socket.on('player_joined', (data) => {
+    showToast(`⚡ ${data.player.name} joined! Starting...`);
+    setTimeout(() => {
+      window.location.href = `/battle.html?room=${roomCode}`;
+    }, 800);
   });
 
   socket.on('battle_start', (data) => {

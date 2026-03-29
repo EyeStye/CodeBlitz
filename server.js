@@ -19,7 +19,32 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ─── MongoDB Models ───────────────────────────────────────────────────────────
 console.log("URI:", process.env.MONGO_URI);
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/codeblitz');
+mongoose.connect(process.env.MONGO_URI, {
+  serverSelectionTimeoutMS: 30000,
+  socketTimeoutMS: 45000,
+  maxPoolSize: 10,
+  retryWrites: true,
+  retryReads: true,
+}).then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB error:', err.message));
+
+mongoose.connection.on('error', err => {
+  console.error('Mongoose connection error:', err.message);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('MongoDB disconnected — reconnecting...');
+  setTimeout(() => {
+    mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+    }).catch(err => console.error('Reconnect error:', err.message));
+  }, 5000); // wait 5 seconds before reconnecting
+});
+
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled rejection:', err.message);
+});
 
 const userSchema = new mongoose.Schema({
   name: String,
@@ -300,6 +325,11 @@ app.post('/api/battle/create', authMiddleware, async (req, res) => {
 
 app.post('/api/battle/join', authMiddleware, async (req, res) => {
   const { roomCode } = req.body;
+  
+  // Debug: find without status filter first
+  const anyBattle = await Battle.findOne({ roomCode });
+  console.log('Join attempt:', roomCode, '| Found:', !!anyBattle, '| Status:', anyBattle?.status);
+  
   const battle = await Battle.findOne({ roomCode, status: 'waiting' });
   if (!battle) return res.status(404).json({ error: 'Room not found or already started' });
   
@@ -324,7 +354,12 @@ app.post('/api/battle/join', authMiddleware, async (req, res) => {
   }
 
   await battle.save();
-  
+
+  // Notify player 1 immediately via socket that opponent joined
+  io.to(roomCode).emit('player_joined', {
+    player: { name: user.name, cfHandle: user.cfHandle, elo: user.elo }
+  });
+
   res.json({ roomCode, battleId: battle._id });
 });
 
@@ -523,4 +558,4 @@ async function endBattle(roomCode, reason) {
 // ─── Start Server ─────────────────────────────────────────────────────────────
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log(`CodeBlitz running on http://localhost:${PORT}`));
+server.listen(PORT, '0.0.0.0', () => console.log(`CodeBlitz running on port ${PORT}`));
